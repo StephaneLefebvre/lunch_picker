@@ -2,6 +2,8 @@
 import json
 import random
 import statistics
+import operator
+
 
 HTML_PAGE = """
 <!DOCTYPE html>
@@ -49,14 +51,21 @@ def create_html_page(restaurant="fake_restaurants"):
         supertable += TABLE_ELT.format(endroit=elt)
     print(HTML_PAGE.format(table=supertable))
 
-def method_3(restaurant="fake_restaurants_vote"):
+def method_3(restaurant="fake_restaurants_notation"):
     """
     Methode to choose the median
     """
     data = json.load(open("restaurant_list.json"))
     dict_endroit = data[restaurant]
+    dict_notation = {}
     for key in dict_endroit:
-        print(key, str(statistics.median(dict_endroit[key])))
+        dict_notation[key] = statistics.median(dict_endroit[key])
+    return max(dict_notation, key=(lambda key: dict_notation[key]))
+
+def method_2(restaurant="fake_restaurants_selection"):
+    data = json.load(open("restaurant_list.json"))
+    dict_endroit = data[restaurant]
+    return max(dict_endroit, key=(lambda key: dict_endroit[key]))
 
 def method_1(restaurant="fake_restaurants"):
     """
@@ -65,13 +74,15 @@ def method_1(restaurant="fake_restaurants"):
     data = json.load(open("restaurant_list.json"))
     return random.choice(data[restaurant])
 
-def test():
+def test_methods():
     """
     test if code is ok
     """
     print(method_1())
-    method_3()
+    print(method_2())
+    print(method_3())
+def test_html():
     create_html_page()
 
 if __name__ == "__main__":
-    test()
+    test_methods()

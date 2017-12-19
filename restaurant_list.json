@@ -5,10 +5,16 @@
     "restaurant B",
     "restaurant C"
   ],
-  "fake_restaurants_vote":
+  "fake_restaurants_selection":
   {
-    "restaurant A": [1, 3, 5],
-    "restaurant B": [1, 2, 3],
+    "restaurant A": 1,
+    "restaurant B": 1,
+    "restaurant C": 2
+  },
+  "fake_restaurants_notation":
+  {
+    "restaurant A": [5, 3, 5],
+    "restaurant B": [4, 4, 4],
     "restaurant C": [3, 4, 5]
   },
   "real_restaurants":
