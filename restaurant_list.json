@@ -1,8 +1,49 @@
 {
-  "restaurants":
+  "fake_restaurants":
   [
     "restaurant A",
     "restaurant B",
     "restaurant C"
+  ],
+  "fake_restaurants_vote":
+  {
+    "restaurant A": [1, 3, 5],
+    "restaurant B": [1, 2, 3],
+    "restaurant C": [3, 4, 5]
+  },
+  "real_restaurants":
+  [
+    "chipotle",
+    "doddys",
+    "brunetti",
+    "indien",
+    "japonais Nina sushi",
+    "hd diner",
+    "petit italien du cote du gosport",
+    "baobab",
+    "boulangerie",
+    "anka",
+    "couscous",
+    "tribeca",
+    "libanais",
+    "creperie pas loin",
+    "taïlandais",
+    "big fernand",
+    "Couscous",
+    "arcouest",
+    "japonais de la piscine",
+    "japonais du grand boulevard",
+    "Viet",
+    "La crêperie de Boulogne Pont de Saint-Cloud",
+    "cantine",
+    "chinois du bord de seine",
+    "traiteur chinois en allant vers Sembat",
+    "anamour le grec à Sembat",
+    "carrefour du pauvre",
+    "japonais péruvien à marcel sembat",
+    "Moa la boulangerie pour un repas du pauvre",
+    "b chef bagel party",
+    "Kebab Marcel Semba",
+    "Kebab pas loin"
   ]
 }
