@@ -44,7 +44,7 @@
     "Japonais péruvien à marcel sembat":  {"address": "", "distance": 1, "prices": "12-16", "type": ["japonais"]},
     "Kebab Marcel Semba":  {"address": "", "distance": 1, "prices": "12-16", "type": ["kebab"]},
     "Kebab pas loin":  {"address": "", "distance": 1, "prices": "12-16", "type": ["kebab"]},
-    "Kebab pas vraiment kebab mais tunisien de l'autre côté du pont":  {"address": "", "distance": 1, "prices": "12-16", "type": ["tunisien"]},
+    "Tunisien kebab de l'autre côté du pont":  {"address": "", "distance": 1, "prices": "12-16", "type": ["tunisien"]},
     "La crêperie de Boulogne Pont de Saint-Cloud":  {"address": "", "distance": 1, "prices": "12-16", "type": ["crèpes"]},
     "Le Relais de Bretagne":  {"address": "86 avenue Victor Hugo, 92100 Boulogne-Billancourt, France", "distance": 16, "prices": "12", "type": ["couscous", "festif"]},
     "Libanais":  {"address": "", "distance": 1, "prices": "12-16", "type": ["libanais"]},

@@ -6,5 +6,6 @@ def test_methods():
     print(method_2())
     print(method_3())
 
+
 def test_html():
     create_html_page()
