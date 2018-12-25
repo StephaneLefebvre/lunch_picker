@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 
+import requests
 import json
 from flask import Flask, request
 
@@ -51,7 +52,6 @@ def create_html_page(restaurant="real_restaurants"):
     list_endroit = data[restaurant]
     supertable = ""
     for elt in list_endroit:
-        # import ipdb; ipdb.set_trace()
         supertable += TABLE_ELT.format(endroit=elt, **list_endroit[elt])
     return HTML_PAGE.format(table=supertable)
 
@@ -63,8 +63,8 @@ def vote():
         if request.form[restaurant] != "0":
             dict_endroit[restaurant] = request.form[restaurant]
     result = max(dict_endroit, key=(lambda key: dict_endroit[key]))
-    print(dict_endroit)
-    return "Ton vote à été pris en compte, le vainqueur actuel est '{}'".format(result)
+    r = requests.post("http://127.0.0.1:7070/best", data=dict_endroit)
+    return "Ton vote à été pris en compte, le vainqueur actuel est '{}'".format(r.text)
 
 
 if __name__ == "__main__":
