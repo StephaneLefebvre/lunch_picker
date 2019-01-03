@@ -1,17 +1,22 @@
 #! /usr/bin/env python3
-import json
+""" Various methods of election """
+
 import random
 import statistics
-import operator
 
 
-class LunchPicker:
+class LunchPicker(object):
+    """
+    Object containing statics methods to be listed and called by the
+    microservice
+    """
     @staticmethod
     def median(dict_endroit):
         """ choose the median """
+        dict_notation = {}
         for key in dict_endroit:
             dict_notation[key] = statistics.median(dict_endroit[key])
-        return max(dict_notation, key=(lambda key: dict_notation[key]))
+        return LunchPicker.best(dict_notation)
 
     @staticmethod
     def best(dict_endroit):
@@ -19,7 +24,17 @@ class LunchPicker:
         return max(dict_endroit, key=(lambda key: dict_endroit[key]))
 
     @staticmethod
-    def random(dict_endroit):
-        """ random choice between avaiable propositions """
-        return random.choice(data[restaurant])
+    def best_of_many(list_dict_endroits):
+        """ take a list of options, sum them and return the best one """
+        agregate_dict = {}
+        for dict_endroit in list_dict_endroits:
+            agregate_dict = {
+                k: agregate_dict.get(k, 0) + dict_endroit.get(k, 0)
+                for k in set(agregate_dict) | set(dict_endroit)
+            }
+        return LunchPicker.best(agregate_dict)
 
+    @staticmethod
+    def random(list_endroit):
+        """ random choice between avaiable propositions """
+        return random.choice(list_endroit)

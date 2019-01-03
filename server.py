@@ -1,10 +1,12 @@
 #! /usr/bin/env python3
+# -*- coding: utf-8 -*-
+""" Create and give the frontend to choose the restaurant """
 
-import requests
 import json
+import requests
 from flask import Flask, request
 
-app = Flask(__name__)
+APP = Flask(__name__)
 
 HTML_PAGE = """
 <!DOCTYPE html>
@@ -46,8 +48,9 @@ TABLE_ELT = """
 """
 
 
-@app.route("/")
+@APP.route("/")
 def create_html_page(restaurant="real_restaurants"):
+    """ Create the page where we can fill the ballot and vote """
     data = json.load(open("restaurant_list.json"))
     list_endroit = data[restaurant]
     supertable = ""
@@ -56,16 +59,19 @@ def create_html_page(restaurant="real_restaurants"):
     return HTML_PAGE.format(table=supertable)
 
 
-@app.route("/vote", methods=["POST"])
+@APP.route("/vote", methods=["POST"])
 def vote():
+    """ Create the page that process the vote and where the result are displayed """
     dict_endroit = {}
     for restaurant in request.form:
         if request.form[restaurant] != "0":
             dict_endroit[restaurant] = request.form[restaurant]
-    result = max(dict_endroit, key=(lambda key: dict_endroit[key]))
-    r = requests.post("http://127.0.0.1:7070/best", data=dict_endroit)
-    return "Ton vote à été pris en compte, le vainqueur actuel est '{}'".format(r.text)
+    print(
+        "{ip}:{dict_endroit}".format(ip=request.remote_addr, dict_endroit=dict_endroit)
+    )
+    winner = requests.post("http://127.0.0.1:7070/best", data=dict_endroit)
+    return "Ton vote à été pris en compte, le vainqueur actuel est '{}'".format(winner.text)
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    APP.run(host="0.0.0.0", port=8080)
