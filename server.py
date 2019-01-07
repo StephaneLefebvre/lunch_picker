@@ -47,6 +47,11 @@ TABLE_ELT = """
 </tr>
 """
 
+import random, string
+
+def randomword(length):
+   letters = string.ascii_lowercase
+   return ''.join(random.choice(letters) for i in range(length))
 
 @APP.route("/")
 def create_html_page(restaurant="real_restaurants"):
@@ -59,6 +64,8 @@ def create_html_page(restaurant="real_restaurants"):
     return HTML_PAGE.format(table=supertable)
 
 
+dict_result = {}
+
 @APP.route("/vote", methods=["POST"])
 def vote():
     """ Create the page that process the vote and where the result are displayed """
@@ -66,10 +73,17 @@ def vote():
     for restaurant in request.form:
         if request.form[restaurant] != "0":
             dict_endroit[restaurant] = request.form[restaurant]
-    print(
-        "{ip}:{dict_endroit}".format(ip=request.remote_addr, dict_endroit=dict_endroit)
-    )
-    winner = requests.post("http://127.0.0.1:7070/best", data=dict_endroit)
+    global dict_result
+    dict_result[ip] = dict_endroit
+
+    agregate_dict = {}
+    for dict_endroit in dict_result.values():
+        agregate_dict = {
+            k: int(agregate_dict.get(k, 0)) + int(dict_endroit.get(k, 0))
+            for k in set(agregate_dict) | set(dict_endroit)
+        }
+
+    winner = requests.post("http://127.0.0.1:7070/best", data=agregate_dict)
     return "Ton vote à été pris en compte, le vainqueur actuel est '{}'".format(winner.text)
 
 
