@@ -47,11 +47,12 @@ TABLE_ELT = """
 </tr>
 """
 
-import random, string
-
-def randomword(length):
-   letters = string.ascii_lowercase
-   return ''.join(random.choice(letters) for i in range(length))
+class ServeurState:
+    """ To avoid using globals """
+    __shared_state = {}
+    dict_result = {}
+    def __init__(self):
+        self.__dict__ = self.__shared_state
 
 @APP.route("/")
 def create_html_page(restaurant="real_restaurants"):
@@ -64,7 +65,6 @@ def create_html_page(restaurant="real_restaurants"):
     return HTML_PAGE.format(table=supertable)
 
 
-dict_result = {}
 
 @APP.route("/vote", methods=["POST"])
 def vote():
@@ -73,13 +73,13 @@ def vote():
     for restaurant in request.form:
         if request.form[restaurant] != "2":  # optimize network load
             dict_endroit[restaurant] = request.form[restaurant]
-    global dict_result
-    dict_result[request.remote_addr] = dict_endroit
+    serveur_state = ServeurState()
+    serveur_state.dict_result[request.remote_addr] = dict_endroit
 
     agregate_dict = {}
-    for dict_endroit in dict_result.values():
+    for dict_endroit in serveur_state.dict_result.values():
         agregate_dict = {
-            k: int(agregate_dict.get(k, 2)) + int(dict_endroit.get(k, 2))
+            k: int(agregate_dict.get(k, 0)) + int(dict_endroit.get(k, 2))
             for k in set(agregate_dict) | set(dict_endroit)
         }
 
@@ -89,18 +89,16 @@ def vote():
 @APP.route("/vote", methods=["GET"])
 def result():
     """ Create the page that process the vote and where the result are displayed """
-    global dict_result
+    serveur_state = ServeurState()
     agregate_dict = {}
-    for dict_endroit in dict_result.values():
+    for dict_endroit in serveur_state.dict_result.values():  # order problem here
         agregate_dict = {
             k: int(agregate_dict.get(k, 0)) + int(dict_endroit.get(k, 2))
             for k in set(agregate_dict) | set(dict_endroit)
         }
 
-    print(dict_result)
-
     winner = requests.post("http://127.0.0.1:7070/best", data=agregate_dict)
-    return "Ton vote à été pris en compte, le vainqueur actuel est '{}' with relevant vote being : {}".format(winner.text, json.dumps(agregate_dict))
+    return "Ton vote à été pris en compte, le vainqueur actuel est '{}' with relevant vote being : {} and {}".format(winner.text, json.dumps(agregate_dict), json.dumps(serveur_state.dict_result))
 
 
 if __name__ == "__main__":
