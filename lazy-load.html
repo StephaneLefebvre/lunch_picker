@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Lunch picker</title>
+    <meta name="author" content="Alvaro Trigo Lopez" />
+    <meta name="description" content="fullPage full-screen normal scrolling with autoScrolling." />
+    <meta name="keywords"  content="fullpage,jquery,demo,screen,fullscreen,lazyload,lazy,passive,load,src,data-src,media" />
+    <meta name="Resource-type" content="Document" />
+
+
+    <link rel="stylesheet" type="text/css" href="./fullPage.js/dist/fullpage.css" />
+    <link rel="stylesheet" type="text/css" href="examples.css" />
+    <style>
+
+    /* Style for our header texts
+    * --------------------------------------- */
+    h1{
+        font-size: 5em;
+        font-family: arial,helvetica;
+        color: #fff;
+        margin:0;
+    }
+    .intro p{
+        color: #fff;
+    }
+
+    /* Centered texts in each section
+    * --------------------------------------- */
+    .section{
+        text-align:center;
+    }
+
+
+    /* Bottom menu
+    * --------------------------------------- */
+    #infoMenu li a {
+        color: #fff;
+    }
+
+    /* Lazy loading background
+    * --------------------------------------- */
+    #section2.load-background{
+      background-image: url(imgs/bg2.jpg);
+    }
+
+    </style>
+
+    <!--[if IE]>
+        <script type="text/javascript">
+             var console = { log: function() {} };
+        </script>
+    <![endif]-->
+</head>
+<body>
+
+<div id="fullpage">
+    <div class="section " id="section0">
+        <div class="intro">
+            <img data-srcset="imgs/1.png, imgs/2.png"  alt="1"/>
+            <h1>Lunch picker</h1>
+	    <p>Et en plus c'est "beau" !</p>
+        </div>
+    </div>
+    <div class="section" id="section2">
+        <div class="intro">
+            <h1>Go voter !</h1>
+	    $#@!FORMULAIRE!@#$
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="./fullPage.js/dist/fullpage.js"></script>
+<script type="text/javascript" src="./examples.js"></script>
+
+<script type="text/javascript">
+    var myFullpage = new fullpage('#fullpage', {
+        menu: '#menu',
+        sectionsColor: ['#C63D0F', '#1BBC9B', '#7E8F7C'],
+        onLeave: function(origin, destination, direction){
+          if(destination.index === 2){
+             destination.item.classList.add('load-background');
+          }
+        }
+    });
+</script>
+
+</body>
+</html>

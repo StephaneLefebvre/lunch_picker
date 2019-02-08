@@ -6,7 +6,7 @@ mkvirtualenv:
 
 install: mkvirtualenv 
 	${WORKSPACE}/$(JOB_NAME)/bin/pip install --upgrade pip
-	${WORKSPACE}/$(JOB_NAME)/bin/pip install -r requirements.pip
+	${WORKSPACE}/$(JOB_NAME)/bin/pip install -r requirements.txt
 
 review: mkvirtualenv
 	${WORKSPACE}/$(JOB_NAME)/bin/pip install pylint

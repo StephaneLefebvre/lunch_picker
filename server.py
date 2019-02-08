@@ -4,19 +4,12 @@
 
 import json
 import requests
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
+from random import randint, shuffle
 
 APP = Flask(__name__)
 
-HTML_PAGE = """
-<!DOCTYPE html>
-<html>
-<style>
-tr:hover {{
-  background-color: cyan;
-}}
-</style>
-<body>
+FORMULAIRE = """
 <form action="/vote" method="post">
 <table>
 <tr>
@@ -31,10 +24,9 @@ tr:hover {{
 </table>
   <input type="submit" value="Submit">
 </form> 
-
-</body>
-</html>
 """
+
+HTML_PAGE = open("lazy-load.html").read()
 
 TABLE_ELT = """
 <tr>
@@ -58,13 +50,25 @@ class ServeurState:
 def create_html_page(restaurant="real_restaurants"):
     """ Create the page where we can fill the ballot and vote """
     data = json.load(open("restaurant_list.json"))
-    list_endroit = data[restaurant]
+    restaurant_dict = data[restaurant]
+    list_endroit = list(restaurant_dict.keys())
     supertable = ""
-    for elt in list_endroit:
-        supertable += TABLE_ELT.format(endroit=elt, **list_endroit[elt])
-    return HTML_PAGE.format(table=supertable)
+    shuffle(list_endroit)
+    for elt in list_endroit[0:10]:
+        supertable += TABLE_ELT.format(endroit=elt, **restaurant_dict[elt])
+    return HTML_PAGE.replace("$#@!FORMULAIRE!@#$", FORMULAIRE.format(table=supertable))
 
+@APP.route("/<filename>")
+def fullpage(filename):
+    return open(filename).read()
 
+@APP.route("/fullPage.js/dist/<filename>")
+def dist(filename):
+    return send_from_directory("fullPage.js/dist/", filename)
+
+@APP.route("/imgs/<filename>")
+def imgs(filename):
+    return send_from_directory("imgs", filename)
 
 @APP.route("/vote", methods=["POST"])
 def vote():
@@ -97,9 +101,10 @@ def result():
             for k in set(agregate_dict) | set(dict_endroit)
         }
 
-    winner = requests.post("http://127.0.0.1:7070/best", data=agregate_dict)
+    winner = requests.post("http://127.0.0.1:7070/elect", data=agregate_dict)
     return "Ton vote à été pris en compte, le vainqueur actuel est '{}' with relevant vote being : {} and {}".format(winner.text, json.dumps(agregate_dict), json.dumps(serveur_state.dict_result))
 
 
 if __name__ == "__main__":
     APP.run(host="0.0.0.0", port=8080)
+
