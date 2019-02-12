@@ -54,7 +54,7 @@ def create_html_page(restaurant="real_restaurants"):
     list_endroit = list(restaurant_dict.keys())
     supertable = ""
     shuffle(list_endroit)
-    for elt in list_endroit[0:10]:
+    for elt in list_endroit[0:20]:
         supertable += TABLE_ELT.format(endroit=elt, **restaurant_dict[elt])
     return HTML_PAGE.replace("$#@!FORMULAIRE!@#$", FORMULAIRE.format(table=supertable))
 
