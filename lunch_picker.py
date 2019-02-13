@@ -36,6 +36,8 @@ class LunchPicker(object):
     @staticmethod
     def best(dict_endroit):
         """ who has the best grade """
+        if dict_endroit == {}:
+            return ""
         return max(dict_endroit, key=(lambda key: dict_endroit[key]))
 
     @staticmethod
