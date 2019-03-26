@@ -14,11 +14,11 @@ review: mkvirtualenv
 	${WORKSPACE}/$(JOB_NAME)/bin/pylint -f parseable --max-line-length=80 *.py
 
 microservice: install
-	${WORKSPACE}/$(JOB_NAME)/bin/python lunch_picker_microservice.py &
+	${WORKSPACE}/$(JOB_NAME)/bin/python src/lunch_picker_microservice.py &
 	echo "yes"
 
 server: install
-	${WORKSPACE}/$(JOB_NAME)/bin/python server.py &
+	${WORKSPACE}/$(JOB_NAME)/bin/python src/server.py &
 	echo "yes"
 
 all: microservice server
